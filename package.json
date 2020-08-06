@@ -1,0 +1,36 @@
+{
+  "name": "twitter-today-is",
+  "version": "1.0.0",
+  "description": "A Twitter bot to remind everyone what day it is today.",
+  "main": "./src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/app.js",
+    "lint": "node_modules/.bin/eslint src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moonstar-x/twitter-today-is.git"
+  },
+  "author": "moonstar-x",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/moonstar-x/twitter-today-is/issues"
+  },
+  "homepage": "https://github.com/moonstar-x/twitter-today-is#readme",
+  "dependencies": {
+    "@greencoast/logger": "^1.0.1",
+    "cron": "^1.8.2",
+    "dotenv": "^8.2.0",
+    "twitter-lite": "^0.14.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.6.0",
+    "eslint-config-greencoast": "0.0.2"
+  },
+  "eslintConfig": {
+    "extends": [
+      "greencoast/node"
+    ]
+  }
+}
