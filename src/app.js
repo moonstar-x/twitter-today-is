@@ -4,7 +4,7 @@ const logger = require('@greencoast/logger');
 const fs = require('fs');
 const path = require('path');
 const { CronJob } = require('cron');
-const { CRON_EVERYDAY_AT_TEN, MOMENT_DATE_FORMAT } = require('./constants');
+const { CRON_EVERY_MINUTE, CRON_EVERYDAY_AT_TEN, MOMENT_DATE_FORMAT } = require('./constants');
 const { createImagesObject, randomItemFromArray } = require('./utils');
 
 const imagesByDay = createImagesObject();
@@ -16,7 +16,7 @@ const client = new Twitter({
   access_token_secret: process.env.TWITTER_ACCESS_SECRET
 });
 
-const dailyJob = new CronJob(CRON_EVERYDAY_AT_TEN, function() {
+const dailyJob = new CronJob(process.env.NODE_ENV === 'production' ? CRON_EVERYDAY_AT_TEN : CRON_EVERY_MINUTE, function() {
   logger.info('Executing CronJob...');
 
   const file = randomItemFromArray(imagesByDay[new Date().getDay()]);
