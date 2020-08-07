@@ -3,7 +3,7 @@ A Twitter robot to remind everyone what day it is today.
 
 ## Requirements
 
-To install this bot you will need [Node.js](https://nodejs.org/en/) and a [Twitter Developer Account](https://developer.twitter.com/en).
+To install this bot you will need [Node.js](https://nodejs.org/en/), [git-lfs](https://github.com/git-lfs/git-lfs/wiki/Installation) to properly clone the repo with all the images in the `assets` folder, and a [Twitter Developer Account](https://developer.twitter.com/en).
 
 ## Installation
 
