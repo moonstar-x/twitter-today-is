@@ -29,7 +29,10 @@ TWITTER_ACCESS_SECRET="YOUR USER ACCESS SECRET"
 TIMEZONE="YOUR TIMEZONE"
 COORD_LAT="TWEET COORDINATES LATITUDE AS NUMBER"
 COORD_LONG="TWEET COORDINATES LONGITUDE AS NUMBER"
+NODE_ENV=production
 ```
+
+> The `NODE_ENV` variable should be set to `production` to make the bot tweet everyday at 10:00 AM, otherwise, the bot will tweet every minute.
 
 ## Usage
 
