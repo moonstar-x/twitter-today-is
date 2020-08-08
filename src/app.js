@@ -1,10 +1,8 @@
 require('dotenv').config();
 const Twitter = require('twitter');
-const logger = require('@greencoast/logger');
 const fs = require('fs');
 const path = require('path');
-const { CronJob } = require('cron');
-const { CRON_EVERY_MINUTE, CRON_EVERYDAY_AT_TEN, MOMENT_DATE_FORMAT } = require('./constants');
+const Toolkit = require('actions-toolkit');
 const { createImagesObject, randomItemFromArray } = require('./utils');
 
 const imagesByDay = createImagesObject();
@@ -16,35 +14,27 @@ const client = new Twitter({
   access_token_secret: process.env.TWITTER_ACCESS_SECRET
 });
 
-const dailyJob = new CronJob(process.env.NODE_ENV === 'production' ? CRON_EVERYDAY_AT_TEN : CRON_EVERY_MINUTE, function() {
-  logger.info('Executing CronJob...');
+Toolkit.run((tools) => {
+  tools.log.info('Executing Action...');
 
   const file = randomItemFromArray(imagesByDay[new Date().getDay()]);
   const image = fs.readFileSync(path.join(__dirname, '../assets', file));
 
   client.post('media/upload', { media: image })
     .then((media) => {
-      logger.info(`Uploaded image ${file}`);
+      tools.log.info(`Uploaded image ${file}`);
 
       client.post('statuses/update', { status: '', media_ids: media.media_id_string, lat: process.env.COORD_LAT, long: process.env.COORD_LONG })
         .then((tweet) => {
-          logger.info(`Posted tweet with ID: ${tweet.id_str}. Current number of tweets: ${tweet.user.statuses_count + 1}`);
-          this.onComplete();
+          tools.log.info(`Posted tweet with ID: ${tweet.id_str}. Current number of tweets: ${tweet.user.statuses_count + 1}`);
         })
         .catch((error) => {
-          logger.error(error);
-          this.onComplete();
+          tools.log.fatal(error);
         });
     })
     .catch((error) => {
-      logger.error(error);
-      this.onComplete();
+      tools.log.fatal(error);
     });
-}, function() {
-  logger.info('CronJob completed.');
-  logger.info(`Next execution is scheduled for: ${this.nextDate().format(MOMENT_DATE_FORMAT)}`);
-}, true, process.env.TIMEZONE);
-
-dailyJob.start();
-logger.info('CronJob initialized.');
-logger.info(`Next execution is scheduled for: ${dailyJob.nextDate().format(MOMENT_DATE_FORMAT)}`);
+}, {
+  event: 'schedule'
+});
